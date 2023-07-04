@@ -75,7 +75,7 @@ class Preprocess:
         self.accommodation_data
         """
         # 여기에 이미지 데이터 넣으면 끝난다.
-
+        # 망고플레이트
 
 
 
