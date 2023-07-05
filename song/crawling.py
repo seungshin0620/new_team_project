@@ -11,28 +11,28 @@ import time
 import pandas as pd
 pd.set_option("display.max_columns", None)
 
-
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver.get('https://www.naver.com/')
-
 class Crawling:
     def __init__(self):
         self.dnum = 0
-        tourist_attractions_data = pd.read_csv("./data/tourist_attractions_data.csv", encoding='cp949')
-        tourist_attractions_name_data = list(tourist_attractions_data["여행지"].values)
+
+        self.temp_list = list()
+        accommodation_data = pd.read_csv("./data/accommodation_data.csv", encoding='cp949')
+        print(accommodation_data)
+        accommodation_data_list = list(accommodation_data["업체명"].values)
+
         address_list = list()
-        image_directory = 'C:/Users/KDT02/Desktop/new_team_project_1/image/'
+        image_directory = 'C:/Users/KDT02/Desktop/new_team_project_1/image/accommodation_data_image/'
         WEB_DRIVER_PATH = "C:/Users/KDT02/Desktop/chromedriver_win32/chromedriver.exe"
         s = Service(WEB_DRIVER_PATH)
         driver = webdriver.Chrome(service=s)
         driver.get("https://www.google.com/search?q=test&hl=ko&tbm=isch&source=hp&biw=1920&bih=969&ei=MB6lZJSJBq-m2roPmcSU-AE&iflsig=AD69kcEAAAAAZKUsQL8gqju5BcU9E9s6OiI7KGjQSbLe&ved=0ahUKEwiU4YX_h_f_AhUvk1YBHRkiBR8Q4dUDCAc&uact=5&oq=test&gs_lcp=CgNpbWcQAzIICAAQgAQQsQMyBQgAEIAEMgUIABCABDIFCAAQgAQyBQgAEIAEMgUIABCABDIFCAAQgAQyBQgAEIAEMgUIABCABDIFCAAQgAQ6BAgAEAM6CAgAELEDEIMBOgsIABCABBCxAxCDAVAAWI0CYLQFaABwAHgAgAGmAYgB7gSSAQMwLjSYAQCgAQGqAQtnd3Mtd2l6LWltZw&sclient=img")
         # XPATH와 FULLXPATH와는 다르구나. FULLXPATH로 하니까 되네...
-        for idx, name in enumerate(tourist_attractions_name_data):
+        for idx, name in enumerate(accommodation_data_list):
             try:
                 input_box = WebDriverWait(driver, timeout=60).until(
                     lambda d: d.find_element(By.XPATH, '//*[@id="REsRA"]'))
                 input_box.clear()
-                input_box.send_keys(f"{name}")
+                input_box.send_keys(f"부산시 {name}")
                 input_box.send_keys(Keys.RETURN)
 
                 first_image = WebDriverWait(driver, timeout=60).until(
@@ -50,11 +50,11 @@ class Crawling:
                 address_list.append("-")
                 print(idx, name, e)
 
-            if idx == len(tourist_attractions_name_data):
-                address_list_df = pd.DataFrame(address_list, columns=["이미지"])
-                address_list_df.to_csv("./data/image_address.csv", index=False)
-                tourist_attractions_data = pd.concat([tourist_attractions_data, address_list_df], axis=1)
-                tourist_attractions_data.to_csv("./data/tourist_attractions_data_1.csv", index=False)
+            # if idx == len(tourist_attractions_name_data):
+            #     address_list_df = pd.DataFrame(address_list, columns=["이미지"])
+            #     address_list_df.to_csv("./data/image_address.csv", index=False)
+            #     tourist_attractions_data = pd.concat([tourist_attractions_data, address_list_df], axis=1)
+            #     tourist_attractions_data.to_csv("./data/tourist_attractions_data_1.csv", index=False)
 
 
 
