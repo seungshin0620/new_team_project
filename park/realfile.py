@@ -8,6 +8,8 @@ from PyQt5.uic.properties import QtGui
 
 from addSchedule import AddSchedule_Function
 from schedule_function import Ui_Form as adschedule_ui
+import testdb
+
 
 class ScheduleFunction(QWidget, adschedule_ui):
     def __init__(self):
@@ -17,15 +19,17 @@ class ScheduleFunction(QWidget, adschedule_ui):
         self.pushButton.clicked.connect(self.add_btn)
         self.add_item()
 
-
     def setui_intit(self):
         self.setupUi(self)
         self.name_settext("박호현")
 
     def add_btn(self):
         a = AddSchedule_Function()
-        a.add_result_function(r"C:\Users\kdt111\Desktop\work\TeamProject44\park\aa.png", "올레", "올레올레~", "홀리홀리", "홀리군", "010-2237-8673")
-        self.vlaout.insertWidget(len(self.vlaout)-1, a)
+        data_value = testdb.DataBaseClass()
+        value_list = data_value.inputandreturn("강서구")
+        a.add_result_function(r"C:\Users\kdt111\Desktop\work\TeamProject44\park\aa.png", value_list["0"]["업체명"], None,
+                              value_list["0"]["주소"], value_list["0"]["시군구명"], value_list["0"]["전화번호"])
+        self.vlaout.insertWidget(len(self.vlaout) - 1, a)
 
     def add_item(self):
         self.vspacer = QSpacerItem(20, 100, QSizePolicy.Expanding, QSizePolicy.Expanding)
