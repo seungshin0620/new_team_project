@@ -15,21 +15,17 @@ class ScheduleFunction(QWidget, adschedule_ui):
         self.setui_intit()
         self.in_widget_function()
         self.pushButton.clicked.connect(self.add_btn)
-        self.list_del = []
         self.add_item()
-        self.pushButton_3.clicked.connect(self.function_del)
+
+
     def setui_intit(self):
         self.setupUi(self)
+        self.name_settext("박호현")
 
     def add_btn(self):
         a = AddSchedule_Function()
+        a.add_result_function(r"C:\Users\kdt111\Desktop\work\TeamProject44\park\aa.png", "올레", "올레올레~", "홀리홀리", "홀리군", "010-2237-8673")
         self.vlaout.insertWidget(len(self.vlaout)-1, a)
-        self.switch_ = True
-        n = a.findChild(QLabel)
-        f = n.parent()
-        f = f.parent()
-        self.list_del.append(f)
-
 
     def add_item(self):
         self.vspacer = QSpacerItem(20, 100, QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -41,12 +37,9 @@ class ScheduleFunction(QWidget, adschedule_ui):
         widget = QWidget(self)
         widget.setLayout(self.vlaout)
         self.scrollArea.setWidget(widget)
-    def function_del(self):
-        self.list_del[-1].deleteLater()
 
-
-
-
+    def name_settext(self, name):
+        self.label.setText(name)
 
 
 if __name__ == '__main__':
@@ -55,4 +48,3 @@ if __name__ == '__main__':
 
     sub_function.show()
     app.exec_()
-
