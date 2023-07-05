@@ -8,10 +8,13 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from urllib import request
 import time
+import pandas as pd
+pd.set_option("display.max_columns", None)
 
 
 class Crawling:
     def __init__(self):
+        self.accommodation_data = pd.read_csv("./data/accommodation_data.csv", encoding='cp949')
         image_directory = 'C:/Users/KDT02/Desktop/new_team_project/song/image/'
         WEB_DRIVER_PATH = "C:/Users/KDT02/Desktop/chromedriver_win32/chromedriver.exe"
         s = Service(WEB_DRIVER_PATH)
@@ -28,7 +31,6 @@ class Crawling:
         big_image = driver.find_element(By.XPATH, '//*[@id="Sva75c"]/div[2]/div[2]/div[2]/div[2]/c-wiz/div/div/div/div[3]/div[1]/a/img[1]')
         big_image_url = big_image.get_attribute('src')
         request.urlretrieve(big_image_url, image_directory + "해운대.png")
-
 
         while True:
             pass
