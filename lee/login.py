@@ -7,6 +7,7 @@ from PyQt5.uic.properties import QtWidgets
 import sqlite3
 
 from login_ui import Ui_Form as ui_login
+from pythonstudy.trip_pj.main_page import Main_Page
 
 
 class login(QWidget, ui_login):
@@ -24,17 +25,20 @@ class login(QWidget, ui_login):
         self.show()
         self.fade()
 
+
+    # 프로그램 실행시 페이드 인 효과
     def fade(self):
         for i in range(100):
-            i = i/100
-            self.setWindowOpacity(0+i)
-            time.sleep(0.01)
+            self.setWindowOpacity(i/100)
+            time.sleep(0.018)
 
+    # 로그인 기능 함수
     def login_Function(self):
         self.stackedWidget.setCurrentIndex(0)
         db = sqlite3.connect("data.db")
         cur = db.cursor()
         user_info = cur.execute("select * from user_info")
+        print(user_info.fetchall())
         user = self.id_line.text()
         password = self.pw_line.text()
         try:
@@ -47,12 +51,18 @@ class login(QWidget, ui_login):
                 cur.execute(query)
                 result_pass = cur.fetchone()[0]
                 if result_pass == password:
-                    self.stackedWidget.setCurrentIndex(2)
+                    self.mainapp = Main_Page()
+                    self.mainapp.show()
+                    self.close()
+
                 else:
                     self.error_lbl.setText("비밀번호가 틀렸습니다.")
+            return
         except:
             self.error_lbl.setText("아이디 또는 비밀번호가 틀렸습니다.")
+            return
 
+    # 회원가입 기능 함수
     def join_Function(self, switc_):
         if switc_:
             clear_list = self.findChildren(QLineEdit)
@@ -83,7 +93,6 @@ class login(QWidget, ui_login):
             self.error_lbl_2.setText("비밀번호가 일치하지 않습니다.")
             return
         else:
-            print(111)
             conn = sqlite3.connect('data.db')
             cur = conn.cursor()
             user_info_ = [name, user, password, age]
@@ -106,21 +115,7 @@ class login(QWidget, ui_login):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     myWindow = login()
+
     myWindow.show()
-
-
-    def show_error_message(message, traceback):
-
-        msg_box = QtWidgets.QMessageBox()
-        msg_box.setIcon(QtWidgets.QMessageBox.Critical)
-        msg_box.setWindowTitle("Error")
-        msg_box.setText(message)
-        msg_box.exec()
-        traceback.print_exc()
-
-
-    sys.excepthook = lambda exctype, value, traceback: show_error_message(str(value), traceback)
-
-
     app.exec_()
 
